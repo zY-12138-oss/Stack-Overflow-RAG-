@@ -1,0 +1,17 @@
+{
+  "active_version": "v2",
+  "versions": {
+    "v1": {
+      "version": "v1",
+      "updated_at": "2026-06-20T01:47:25.967873+00:00",
+      "status": "ready",
+      "documents": 10
+    },
+    "v2": {
+      "version": "v2",
+      "updated_at": "2026-06-20T01:47:25.984053+00:00",
+      "status": "ready",
+      "documents": 20
+    }
+  }
+}

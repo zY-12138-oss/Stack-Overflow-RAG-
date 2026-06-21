@@ -1,0 +1,12 @@
+﻿[
+  {
+    "query": "Redis 批量写入后反序列化报错怎么办",
+    "expected_doc_id": "fallback_redis_deserialize",
+    "category": "redis"
+  },
+  {
+    "query": "FastAPI upload multipart validation issue",
+    "expected_doc_id": "fallback_fastapi_upload",
+    "category": "fastapi"
+  }
+]

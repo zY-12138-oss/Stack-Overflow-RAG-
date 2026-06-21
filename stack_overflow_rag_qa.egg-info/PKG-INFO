@@ -1,0 +1,145 @@
+Metadata-Version: 2.4
+Name: stack-overflow-rag-qa
+Version: 0.2.1
+Summary: Stack Overflow RAG QA system phased scaffold.
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+Requires-Dist: fastapi>=0.115.0
+Requires-Dist: uvicorn>=0.30.0
+Requires-Dist: pydantic>=2.8.0
+Requires-Dist: pydantic-settings>=2.3.0
+Requires-Dist: httpx>=0.27.0
+Requires-Dist: chromadb>=0.5.5
+Provides-Extra: dev
+Requires-Dist: pytest>=8.2.0; extra == "dev"
+
+﻿# Stack Overflow RAG QA
+
+这是根据 [技术方案设计](E:\Agent_program\技术方案设计.md) 和 [项目计划书](E:\Agent_program\项目计划书.md) 搭建并持续演进的分阶段项目骨架。
+
+## 当前阶段
+
+当前代码已进入第二阶段内测版增强版，支持双路召回、基础缓存、结构化日志和可切换向量库，并已接入 ChromaDB。
+
+### 第一阶段已完成
+
+- 项目目录与分层结构初始化
+- FastAPI 基础接口
+- 最小可用跨语言 RAG 闭环
+- 本地 JSONL 种子数据加载
+- 导入、重建、评估脚本
+- 基础测试样例
+
+### 第二阶段已完成
+
+- 双路召回：英文改写召回 + 中文原问召回
+- 合并去重与增强重排序
+- 内存答案缓存
+- 结构化查询日志
+- 管理接口：查询日志、缓存统计
+- 第二阶段评测集与评测脚本
+- 可切换向量库：`in_memory` / `chroma`
+- ChromaDB 本地持久化索引
+
+### 第三阶段预留
+
+- 索引版本切换
+- 增量更新
+- 运维与可观测能力
+
+## 目录结构
+
+```text
+app/
+  api/
+  core/
+  services/
+  providers/
+  repositories/
+  models/
+  tasks/
+scripts/
+docs/phases/
+evals/
+tests/
+```
+
+## 本地运行
+
+1. 安装依赖
+
+```bash
+pip install -e .[dev]
+```
+
+2. 启动服务
+
+```bash
+uvicorn app.main:app --reload
+```
+
+3. 查看接口
+
+- `http://127.0.0.1:8000/docs`
+- `http://127.0.0.1:8000/api/v1/health`
+- `http://127.0.0.1:8000/api/v1/admin/query-logs`
+- `http://127.0.0.1:8000/api/v1/admin/cache/stats`
+
+## 使用 ChromaDB
+
+在 `.env` 里增加或修改：
+
+```env
+SO_RAG_VECTOR_STORE_PROVIDER=chroma
+SO_RAG_CHROMA_PERSIST_PATH=data/indexes/chroma
+SO_RAG_CHROMA_COLLECTION_NAME=stack_overflow_qa
+```
+
+如果想临时回退到内存版：
+
+```env
+SO_RAG_VECTOR_STORE_PROVIDER=in_memory
+```
+
+## 接入真实云端模型
+
+1. 复制配置文件
+
+```bash
+copy .env.example .env
+```
+
+2. 配置 `.env`
+
+```env
+SO_RAG_PROVIDER_MODE=openai_compatible
+SO_RAG_VECTOR_STORE_PROVIDER=chroma
+
+SO_RAG_LLM_API_KEY=your_llm_api_key
+SO_RAG_LLM_BASE_URL=https://api.openai.com/v1
+SO_RAG_LLM_MODEL=gpt-4.1-mini
+SO_RAG_REWRITE_MODEL=gpt-4.1-mini
+
+SO_RAG_EMBEDDING_API_KEY=your_embedding_api_key
+SO_RAG_EMBEDDING_BASE_URL=https://api.openai.com/v1
+SO_RAG_EMBEDDING_MODEL=text-embedding-3-small
+
+SO_RAG_USE_LLM_FOR_REWRITE=true
+SO_RAG_ENABLE_DUAL_RETRIEVAL=true
+```
+
+## 常用脚本
+
+```bash
+python scripts/ingest_stackoverflow.py
+python scripts/rebuild_index.py
+python scripts/eval_retrieval.py
+python scripts/eval_phase2.py
+pytest
+```
+
+## 说明
+
+- 当前推荐第二阶段默认使用 `ChromaDB`，比纯内存向量库更接近真实检索形态。
+- 当前 rerank 仍是规则增强版，下一步可以接 Cross-Encoder 继续提升质量。
+- 后续接入 Redis、FAISS、Cross-Encoder 时，优先扩展 `app/services/` 和 `app/providers/`。

@@ -1,0 +1,35 @@
+{
+  "answer:test": {
+    "value": {
+      "query_id": "q1",
+      "answer": "answer",
+      "confidence": "high",
+      "citations": [
+        {
+          "title": "t",
+          "url": "https://example.com"
+        }
+      ],
+      "notes": [],
+      "debug": {
+        "language": "zh",
+        "normalized_query": "n",
+        "rewritten_query": "r",
+        "retrieval_routes": [
+          "rewrite_to_en"
+        ],
+        "retrieved_doc_ids": [
+          "d1"
+        ],
+        "route_results": {
+          "rewrite_to_en": [
+            "d1"
+          ]
+        },
+        "cache_hit": false,
+        "context_preview": null
+      }
+    },
+    "expires_at": "2026-06-20T01:48:25.929210+00:00"
+  }
+}
