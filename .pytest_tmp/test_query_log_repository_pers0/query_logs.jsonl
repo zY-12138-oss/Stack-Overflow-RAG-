@@ -1,1 +1,0 @@
-{"query_id": "q1", "user_query": "test", "detected_language": "zh", "rewritten_query": "test en", "retrieval_routes": ["rewrite_to_en"], "retrieved_doc_ids": ["d1"], "final_answer": "ok", "latency_ms": 10, "llm_model": "mock-llm", "embedding_model": "mock-embedding", "cache_hit": false, "created_at": "2026-06-20T01:47:26.050513Z"}

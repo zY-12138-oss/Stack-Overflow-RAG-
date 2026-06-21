@@ -1,8 +1,0 @@
-{
-  "total_requests": 5,
-  "cache_hits": 1,
-  "cache_misses": 2,
-  "total_latency_ms": 66709,
-  "qa_successes": 2,
-  "qa_failures": 0
-}
